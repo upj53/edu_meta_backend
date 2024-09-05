@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>원준 > 프롬프트 구현</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+  <header class="border-bottom pb-3">
+    <div style="margin-left:10px;">
+      <a href="/"><i class="fa-solid fa-house"></i></a>
+    </div>  
+    <h1>프롬프트 구현</h1>
+    <p>2023, "생성형 AI를 활용한 프로그래밍 교육용 코드 생성 프롬프트 개발"</p>
+  </header>
+  <main class="p-3">
+    <!---------------------- 0단계 프롬프트 ---------------------->
+    <h2>0단계 프롬프트: ChatGPT 역할 정하기</h2>
+    <form id="gpt-prompt-0" name="model" method="post" class="pb-5">
+    <div class="pb-3">
+      <div class="input-group">
+        <span class="input-group-text">역할</span>
+        <select name="role1" id="role1" class="form-select" disabled>
+          <option value="system" selected>system</option>
+          <option value="assistant">assistant</option>
+          <option value="user">user</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <span class="input-group-text">내용</span>
+        <input name="content1" id="content1" type="string" class="form-control" disabled
+          value="You are a teacher of Python programming. Your task is answering the following questions."
+        />
+      </div>
+    </div>
+    <div class="pb-3">
+      <div class="input-group">
+        <span class="input-group-text">역할</span>
+        <select name="role2" id="role2" class="form-select" disabled>
+          <option value="system" selected>system</option>
+          <option value="assistant">assistant</option>
+          <option value="user">user</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <span class="input-group-text">내용</span>
+        <input name="content2" id="content2" type="string" class="form-control" disabled
+          value="Translate all answers in korean."
+        />
+      </div>
+    </div>
+    <div class="pb-3">
+      <div class="input-group">
+        <span class="input-group-text">역할</span>
+        <select name="role3" id="role3" class="form-select">
+          <option value="system">system</option>
+          <option value="assistant">assistant</option>
+          <option value="user" selected>user</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <span class="input-group-text">내용</span>
+        <input name="content3" id="content3" type="string" class="form-control"
+          value="Make 2 basic excercise questions for loop programming in the form of stories using real-life topics base on only input, output, and for loop."
+        />
+      </div>
+    </div>
+
+    <div class="row d-flex justify-content-evenly">
+      <div id="loading-0" class="spinner-border text-primary pt-3" role="status" style="display:none;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <div class="">
+      <div id="gpt-result-0" style="white-space: pre-wrap;"></div>
+    </div>
+
+    <div class="row d-flex justify-content-evenly">
+      <button id="btn-chatgpt-0" type="submit" class="btn btn-primary col-3">0단계 ChatGPT</button>
+      <button id="btn-reset-0" type="reset" class="btn btn-primary col-3">초기화</button>
+    </div>
+    </form>
+
+    <!---------------------- 1단계 프롬프트 ---------------------->
+    <h2>1단계 프롬프트</h2>
+    <form id="gpt-prompt-1" method="post" enctype="multipart/form-data" name="model" class="pb-5">
+    <div class="pb-3">
+      <div class="input-group">
+        <span class="input-group-text">역할</span>
+        <select name="role" class="form-select">
+          <option value="system">system</option>
+          <option value="assistant">assistant</option>
+          <option value="user" selected>user</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <span class="input-group-text">내용</span>
+        <input name="content" type="string" class="form-control"
+          value="Write above 2 questions as Python code examples."
+        />
+      </div>
+    </div>
+
+    <div class="row d-flex justify-content-evenly">
+      <div id="loading-1" class="spinner-border text-primary" role="status" style="display:none;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <div class="">
+      <div id="gpt-result-1" style="white-space: pre-wrap;"></div>
+    </div>
+
+    <div class="row d-flex justify-content-evenly">
+      <button id="btn-chatgpt-1" type="submit" class="btn btn-primary col-3">1단계 ChatGPT</button>
+      <button id="btn-reset-1" type="reset" class="btn btn-primary col-3">초기화</button>
+    </div>
+    </form>
+
+    <!---------------------- 2단계 프롬프트 ---------------------->
+    <h2>2단계 프롬프트</h2>
+    <form id="gpt-prompt-2" method="post" enctype="multipart/form-data" name="model" class="pb-5">
+    <div class="pb-3">
+      <div class="input-group">
+        <span class="input-group-text">역할</span>
+        <select name="role" class="form-select">
+          <option value="system">system</option>
+          <option value="assistant">assistant</option>
+          <option value="user" selected>user</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <span class="input-group-text">내용</span>
+        <input name="content" type="string" class="form-control"
+          value="Make unit tests of these codes."
+        />
+      </div>
+    </div>
+
+    <div class="row d-flex justify-content-evenly">
+      <div id="loading-2" class="spinner-border text-primary" role="status" style="display:none;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <div class="">
+      <div id="gpt-result-2" style="white-space: pre-wrap;"></div>
+    </div>
+
+    <div class="row d-flex justify-content-evenly">
+      <button id="btn-chatgpt-2" type="submit" class="btn btn-primary col-3">2단계 ChatGPT</button>
+      <button id="btn-reset-2" type="reset" class="btn btn-primary col-3">초기화</button>
+    </div>
+    </form>
+
+    <!---------------------- 3단계 프롬프트 ---------------------->
+    <h2>3단계 프롬프트</h2>
+    <form id="gpt-prompt-3" method="post" enctype="multipart/form-data" name="model" class="pb-5">
+    <div class="pb-3">
+      <div class="input-group">
+        <span class="input-group-text">역할</span>
+        <select name="role" class="form-select">
+          <option value="system">system</option>
+          <option value="assistant">assistant</option>
+          <option value="user" selected>user</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <span class="input-group-text">내용</span>
+        <input name="content" type="string" class="form-control"
+          value="Make all Python codes above as Java codes."
+        />
+      </div>
+    </div>
+
+    <div class="row d-flex justify-content-evenly">
+      <div id="loading-3" class="spinner-border text-primary" role="status" style="display:none;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <div class="">
+      <div id="gpt-result-3" style="white-space: pre-wrap;"></div>
+    </div>
+
+    <div class="row d-flex justify-content-evenly">
+      <button id="btn-chatgpt-3" type="submit" class="btn btn-primary col-3">3단계 ChatGPT</button>
+      <button id="btn-reset-3" type="reset" class="btn btn-primary col-3">초기화</button>
+    </div>
+    </form>
+
+    <!---------------------- 4단계 프롬프트 ---------------------->
+    <h2>4단계 프롬프트</h2>
+    <form id="gpt-prompt-4" method="post" enctype="multipart/form-data" name="model" class="pb-5">
+    <div class="pb-3">
+      <div class="input-group">
+        <span class="input-group-text">역할</span>
+        <select name="role" class="form-select">
+          <option value="system">system</option>
+          <option value="assistant">assistant</option>
+          <option value="user" selected>user</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <span class="input-group-text">내용</span>
+        <input name="content" type="string" class="form-control"
+          value=""
+        />
+      </div>
+    </div>
+
+    <div class="row d-flex justify-content-evenly">
+      <div id="loading-4" class="spinner-border text-primary" role="status" style="display:none;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <div class="">
+      <div id="gpt-result-4" style="white-space: pre-wrap;"></div>
+    </div>
+
+    <div class="row d-flex justify-content-evenly">
+      <button id="btn-chatgpt-4" type="submit" class="btn btn-primary col-3">4단계 ChatGPT</button>
+      <button id="btn-reset-4" type="reset" class="btn btn-primary col-3">초기화</button>
+    </div>
+    </form>
+  </main>
+  <footer class="border-top pb-5">
+  </footer>
+</div>
+
+<script>
+const form = document.querySelector('#gpt-prompt-0')
+const result = document.querySelector('#gpt-result-0')
+const loading = document.querySelector('#loading-0')
+const btn_chatgpt = document.querySelector('#btn-chatgpt-0')
+const btn_reset = document.querySelector('#btn-reset-0')
+const form1 = document.querySelector('#gpt-prompt-1')
+const result1 = document.querySelector('#gpt-result-1')
+const loading1 = document.querySelector('#loading-1')
+const btn_chatgpt1 = document.querySelector('#btn-chatgpt-1')
+const btn_reset1 = document.querySelector('#btn-reset-1')
+const form2 = document.querySelector('#gpt-prompt-2')
+const result2 = document.querySelector('#gpt-result-2')
+const loading2 = document.querySelector('#loading-2')
+const btn_chatgpt2 = document.querySelector('#btn-chatgpt-2')
+const btn_reset2 = document.querySelector('#btn-reset-2')
+const form3 = document.querySelector('#gpt-prompt-3')
+const result3 = document.querySelector('#gpt-result-3')
+const loading3 = document.querySelector('#loading-3')
+const btn_chatgpt3 = document.querySelector('#btn-chatgpt-3')
+const btn_reset3 = document.querySelector('#btn-reset-3')
+const form4 = document.querySelector('#gpt-prompt-4')
+const result4 = document.querySelector('#gpt-result-4')
+const loading4 = document.querySelector('#loading-4')
+const btn_chatgpt4 = document.querySelector('#btn-chatgpt-4')
+const btn_reset4 = document.querySelector('#btn-reset-4')
+
+function sendData() {
+  btn_chatgpt.disabled = true
+  loading.style.display = 'block'
+  result.innerText = ''
+  const formData = new FormData()
+  formData.append('role1', form['role1'].value)
+  formData.append('content1', form['content1'].value)
+  formData.append('role2', form['role2'].value)
+  formData.append('content2', form['content2'].value)
+  formData.append('role3', form['role3'].value)
+  formData.append('content3', form['content3'].value)
+  // let formData = {}
+  // formData['role1'] = form.role1.value
+  // formData['content1'] = form.content1.value
+  // formData['role2'] = form.role2.value
+  // formData['content2'] = form.content2.value
+  // formData['role3'] = form.role3.value
+  // formData['content3'] = form.content3.value
+  // console.log(formData)
+  fetch('{{ domain }}/paper1-init', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json()) //response.text())
+  .then(data => {
+    // let result_txt = data['chatgpt'].replace('\n', '<br>')
+    // result_txt = data['chatgpt']
+    // console.log(data['chatgpt'])
+    // result.innerHTML = JSON.stringify(data)
+    result.innerText = data
+  })
+  .catch(error => {
+    console.error('에러 발생: ', error)
+  })
+  .finally(() => {
+    loading.style.display = 'none'
+  })
+}
+
+function sendData1() {
+  btn_chatgpt1.disabled = true 
+  loading1.style.display = 'block'
+  result1.innerText = ''
+  const formData1 = new FormData()
+  formData1.append('role', form1['role'].value)
+  formData1.append('content', form1['content'].value)
+  // console.log(`${form1['role'].value}\n${form1['content'].value}`)
+  fetch('{{ domain }}/paper1-single', {
+    method: 'POST',
+    body: formData1
+  })
+  .then(response => response.json())
+  .then(data => {
+    // result_txt = data['chatgpt']
+    // result1.innerText = result_txt
+    result1.innerText = data
+  })
+  .catch(error => {
+    console.error('에러발생', error)
+  })
+  .finally(() => {
+    loading1.style.display = 'none'
+  })
+}
+function sendData2() {
+  btn_chatgpt2.disabled = true 
+  loading2.style.display = 'block'
+  result2.innerText = ''
+  const formData2 = new FormData()
+  formData2.append('role', form2['role'].value)
+  formData2.append('content', form2['content'].value)
+  fetch('{{ domain }}/paper1-single', {
+    method: 'POST',
+    body: formData2
+  })
+  .then(response => response.json())
+  .then(data => {
+    result2.innerText = data
+  })
+  .catch(error => {
+    console.error('에러발생', error)
+  })
+  .finally(() => {
+    loading2.style.display = 'none'
+  })
+}
+function sendData3() {
+  btn_chatgpt3.disabled = true 
+  loading3.style.display = 'block'
+  result3.innerText = ''
+  const formData3 = new FormData()
+  formData3.append('role', form3['role'].value)
+  formData3.append('content', form3['content'].value)
+  fetch('{{ domain }}/paper1-single', {
+    method: 'POST',
+    body: formData3
+  })
+  .then(response => response.json())
+  .then(data => {
+    result3.innerText = data
+  })
+  .catch(error => {
+    console.error('에러발생', error)
+  })
+  .finally(() => {
+    loading3.style.display = 'none'
+  })
+}
+function sendData4() {
+  btn_chatgpt4.disabled = true 
+  loading4.style.display = 'block'
+  result4.innerText = ''
+  const formData4 = new FormData()
+  formData4.append('role', form4['role'].value)
+  formData4.append('content', form4['content'].value)
+  fetch('{{ domain }}/paper1-single', {
+    method: 'POST',
+    body: formData4
+  })
+  .then(response => response.json())
+  .then(data => {
+    result4.innerText = data
+  })
+  .catch(error => {
+    console.error('에러발생', error)
+  })
+  .finally(() => {
+    loading4.style.display = 'none'
+  })
+}
+
+form.addEventListener('submit', (event) => {
+  event.preventDefault()
+  sendData()
+})
+form.addEventListener('reset', (event) => {
+  fetch('{{ domain }}/paper1-reset', {
+    method: 'POST'
+  })
+  btn_chatgpt.disabled = false
+  result.innerText = ''
+  btn_chatgpt1.disabled = false
+  result1.innerText = ''
+  btn_chatgpt2.disabled = false
+  result2.innerText = ''
+  btn_chatgpt3.disabled = false
+  result3.innerText = ''
+  btn_chatgpt4.disabled = false
+  result4.innerText = ''
+})
+form1.addEventListener('submit', (event) => {
+  event.preventDefault()
+  sendData1()
+})
+form1.addEventListener('reset', (event) => {
+  fetch('{{ domain }}/paper1-reset', {
+    method: 'POST'
+  })
+  btn_chatgpt.disabled = false
+  result.innerText = ''
+  btn_chatgpt1.disabled = false
+  result1.innerText = ''
+  btn_chatgpt2.disabled = false
+  result2.innerText = ''
+  btn_chatgpt3.disabled = false
+  result3.innerText = ''
+  btn_chatgpt4.disabled = false
+  result4.innerText = ''
+})
+form2.addEventListener('submit', (event) => {
+  event.preventDefault()
+  sendData2()
+})
+form2.addEventListener('reset', (event) => {
+  fetch('{{ domain }}/paper1-reset', {
+    method: 'POST'
+  })
+  btn_chatgpt.disabled = false
+  result.innerText = ''
+  btn_chatgpt1.disabled = false
+  result1.innerText = ''
+  btn_chatgpt2.disabled = false
+  result2.innerText = ''
+  btn_chatgpt3.disabled = false
+  result3.innerText = ''
+  btn_chatgpt4.disabled = false
+  result4.innerText = ''
+})
+form3.addEventListener('submit', (event) => {
+  event.preventDefault()
+  sendData3()
+})
+form3.addEventListener('reset', (event) => {
+  fetch('{{ domain }}/paper1-reset', {
+    method: 'POST'
+  })
+  btn_chatgpt.disabled = false
+  result.innerText = ''
+  btn_chatgpt1.disabled = false
+  result1.innerText = ''
+  btn_chatgpt2.disabled = false
+  result2.innerText = ''
+  btn_chatgpt3.disabled = false
+  result3.innerText = ''
+  btn_chatgpt4.disabled = false
+  result4.innerText = ''
+})
+form4.addEventListener('submit', (event) => {
+  event.preventDefault()
+  sendData4()
+})
+form4.addEventListener('reset', (event) => {
+  fetch('{{ domain }}/paper1-reset', {
+    method: 'POST'
+  })
+  btn_chatgpt.disabled = false
+  result.innerText = ''
+  btn_chatgpt1.disabled = false
+  result1.innerText = ''
+  btn_chatgpt2.disabled = false
+  result2.innerText = ''
+  btn_chatgpt3.disabled = false
+  result3.innerText = ''
+  btn_chatgpt4.disabled = false
+  result4.innerText = ''
+})
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/eaa55c88d8.js" crossorigin="anonymous"></script>
+</body>
+</html>

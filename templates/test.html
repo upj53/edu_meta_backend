@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="https://pyscript.net/releases/2024.2.1/core.css" /> -->
+    <!-- <script type="module" src="https://pyscript.net/releases/2024.2.1/core.js" ></script> -->
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <script src="jquery-3.7.1.min.js"></script>
+    <style>
+        py-terminal {display: none;}
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div id="py-container">
+    </div>
+    <div class="row col-12">
+        <textarea id="python-editor"></textarea>
+        <button id="run-button" class="btn btn-primary">Run</button>
+    </div>
+    <div id='output-container' class="row">
+        <div id="out"></div>
+    </div>
+
+    <script>
+        $('#run-button').click(function() {
+            $('#out').val('');
+            let code =$('#python-editor').val();
+            let code_final = '<py-script id="input" output="out" output-mode="append"> ' + code + ' </py-script>'
+
+            $('#py-container').append(code_final);
+        });
+    </script>    
+</body>
+</html>
