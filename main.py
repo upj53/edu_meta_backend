@@ -1,3 +1,4 @@
+import os
 from dotenv import dotenv_values
 from fastapi import FastAPI, Form, Request, File, UploadFile, Depends, Body
 from fastapi.responses import HTMLResponse, FileResponse
@@ -10,10 +11,6 @@ from pydantic import BaseModel, HttpUrl
 from modules.db import session
 from routers import *
 from models import *
-
-import os
-import time
-import requests
 
 app = FastAPI()
 app.include_router(router_edu.router)
