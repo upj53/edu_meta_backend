@@ -462,6 +462,7 @@ async def test_edu_index():
 
 @app.get("/")
 async def konkuk_edu_index():
+    # print('config_server_status=',config_server_status)
     if config_server_status == 'localhost':
         return FileResponse("./frontend/index-konkuk-localhost.html")
     elif config_server_status == 'goorm':
