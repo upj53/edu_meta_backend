@@ -49,6 +49,7 @@ from modules import (
     edu_get_my_answer_idx,
     edu_update_my_answer,
     edu_get_user_list,
+    edu_get_student_list,
     edu_get_subject,
     edu_get_subject_list,
     edu_get_object,
@@ -565,6 +566,25 @@ async def get_evaluate_my_classroom_list(
     # my_classroom_list = _my_classroom_list,
     # student_list = _student_list
     # )
+    return {
+        "my_classroom_list": _my_classroom_list,
+        "student_list": _student_list,
+        "classroom_list": _classroom_list,
+    }
+
+
+@router.get(
+    "/teacher/{teacherid}/classroom/list",
+    response_model=EduEvaluateClassroomStudentListScheme,
+)
+async def get_teacher_classroom_list(
+    db: Session = Depends(get_db),
+    teacherid: str = "",
+    current_user: EduUserModel = Depends(get_current_user),
+):
+    _my_classroom_list = edu_get_evaluate_my_classroom_list(db)
+    _student_list = edu_get_student_list(db, teacherid)
+    _classroom_list = edu_get_classroom_list(db)
     return {
         "my_classroom_list": _my_classroom_list,
         "student_list": _student_list,

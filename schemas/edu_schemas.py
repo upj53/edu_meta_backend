@@ -11,6 +11,7 @@ class EduUserSchema(BaseModel):
     username: str
     email: str
     current_classroom: int
+    teacherid: str
 
 
 class EduUserCreateScheme(BaseModel):
@@ -21,6 +22,7 @@ class EduUserCreateScheme(BaseModel):
     username: str = ""
     email: EmailStr = ""
     current_classroom: int = 0
+    teacherid:str = ""
 
     @field_validator("userid", "password1", "password2", "email")
     def not_empty(cls, v):

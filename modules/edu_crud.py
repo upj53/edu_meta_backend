@@ -336,9 +336,9 @@ for i in range(1, 21, 1):
 
 
 def edu_get_existing_user(db: Session, user_create: EduUserCreateScheme):
-    print('#'*30)
+    print("#" * 30)
     print(user_create.userid, user_create.email)
-    print('#'*30)
+    print("#" * 30)
     return (
         db.query(EduUserModel)
         .filter(
@@ -357,6 +357,7 @@ def edu_create_user(db: Session, user_create: EduUserCreateScheme):
         username=user_create.username,
         email=user_create.email,
         current_classroom=user_create.current_classroom,
+        teacherid=user_create.teacherid,
     )
     db.add(db_user)
     db.commit()
@@ -388,6 +389,17 @@ def edu_get_user_list(db: Session):  # , skip: int, limit: int):
     total = _user_list.count()
     # user_list = _user_list.offset(skip).limit(limit).all()
     return total, _user_list
+
+
+def edu_get_student_list(db: Session, teacherid: str):
+    _student_list = (
+        db.query(EduUserModel)
+        .filter(
+            EduUserModel.usertype == "student" and EduUserModel.teacherid == teacherid
+        )
+        .order_by(EduUserModel.userid)
+    )
+    return _student_list
 
 
 def edu_get_subject_list(db: Session):
@@ -505,6 +517,7 @@ def edu_update_my_classroom(
     db_my_classroom.created_at = datetime.datetime.now()
     db.commit()
 
+
 def edu_update_my_classroom_time_set(
     db: Session,
     db_my_classroom: EduMyClassroomModel,
@@ -516,7 +529,9 @@ def edu_update_my_classroom_time_set(
     # print(datetime.datetime.now()+datetime.timedelta(hours=user_classroom_update.time_goal_status))
     # print('#'*30)
     time_now = datetime.datetime.now()
-    time_goal = time_now + datetime.timedelta(hours=user_classroom_update.time_goal_status)
+    time_goal = time_now + datetime.timedelta(
+        hours=user_classroom_update.time_goal_status
+    )
     db_my_classroom.time_goal_at = time_now
     db_my_classroom.time_goal_status = user_classroom_update.time_goal_status
     db_my_classroom.time_goal = time_goal
@@ -530,7 +545,9 @@ def edu_update_my_classroom_time_delay(
     user_classroom_update: EduUserMyClassroomUpdateScheme,
 ):
     time_now = datetime.datetime.now()
-    time_goal = time_now + datetime.timedelta(hours=user_classroom_update.time_goal_status)
+    time_goal = time_now + datetime.timedelta(
+        hours=user_classroom_update.time_goal_status
+    )
     db_my_classroom.time_goal = time_goal
     db_my_classroom.time_goal_delay = user_classroom_update.time_goal_delay
     db_my_classroom.updated_at = datetime.datetime.now()

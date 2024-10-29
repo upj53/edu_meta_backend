@@ -23,6 +23,7 @@ class EduUserModel(Base):
     username = Column(String(50), nullable=False)
     email = Column(String(100), unique=True, nullable=False)
     current_classroom = Column(Integer, nullable=False)
+    teacherid = Column(String(30), nullable=True)
 
 
 class EduSubjectModel(Base):
