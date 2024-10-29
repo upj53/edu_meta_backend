@@ -126,4 +126,5 @@ class EduMyAnswerModel(Base):
     created_at = Column(DateTime, nullable=True)
     updated_at = Column(DateTime, nullable=True)
 
+
 # Base.metadata.create_all(bind=ENGINE)

@@ -18,12 +18,12 @@ app.mount("/static", StaticFiles(directory="./static"), name="static")
 app.mount("/assets", StaticFiles(directory="./frontend/assets"))
 config = dotenv_values(".env")
 config_server_status = config["SERVER_STATUS"]
-allow_origins_value = ''
-if config_server_status == 'localhost':
+allow_origins_value = ""
+if config_server_status == "localhost":
     allow_origins_value = config["LOCALHOST_URL_VALUE"]
-elif config_server_status == 'goorm':
+elif config_server_status == "goorm":
     allow_origins_value = config["DOMAIN_GOORM_URL_VALUE"]
-elif config_server_status == 'homeserver':
+elif config_server_status == "homeserver":
     allow_origins_value = config["DOMAIN_HOME_VALUE"]
 app.add_middleware(
     CORSMiddleware,
@@ -32,6 +32,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.get("/favicon.ico")
 async def favicon():
@@ -42,12 +43,13 @@ async def favicon():
         headers={"Content-Disposition": "attachment; filename=" + file_name},
     )
 
+
 @app.get("/")
 async def konkuk_edu_index():
     # print('config_server_status=',config_server_status)
-    if config_server_status == 'localhost':
+    if config_server_status == "localhost":
         return FileResponse("./frontend/index-konkuk-localhost.html")
-    elif config_server_status == 'goorm':
+    elif config_server_status == "goorm":
         return FileResponse("./frontend/index-konkuk.html")
-    elif config_server_status == 'homeserver':
+    elif config_server_status == "homeserver":
         return FileResponse("./frontend/index-konkuk-homeserver.html")

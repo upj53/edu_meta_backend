@@ -22,7 +22,7 @@ class EduUserCreateScheme(BaseModel):
     username: str = ""
     email: EmailStr = ""
     current_classroom: int = 0
-    teacherid:str = ""
+    teacherid: str = ""
 
     @field_validator("userid", "password1", "password2", "email")
     def not_empty(cls, v):
@@ -62,7 +62,8 @@ class EduUserMyClassroomUpdateScheme(BaseModel):
     time_goal: datetime.datetime | None = None
     time_goal_delay: list = []
 
-'''
+
+"""
 update_params = {
     "idx": 0,
     "userid": "user9",
@@ -72,7 +73,8 @@ update_params = {
     "time_goal": "2024-07-25T2:12:34.000Z",
     "time_goal_delay": [],
 }
-'''
+"""
+
 
 class EduUserMyClassroomChatgptUpdateScheme(BaseModel):
     idx: int = 0
