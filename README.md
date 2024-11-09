@@ -220,17 +220,23 @@ certbot --version
 sudo certbot certonly --standalone
 
 # FastAPI HTTS 서비스 시작하기
-# fullchain.pem 인증서 파일 → key.pem
-# privkey.pem 키 파일 → cert.pem
-uvicorn main:app --host 0.0.0.0 --port 443 --ssl-keyfile=./key.pem --ssl-certfile=./cert.pem
+uvicorn main:app --host 0.0.0.0 --port 443 --ssl-keyfile /etc/letsencrypt/live/edu.upj53.kr/privkey.pem  --ssl-certfile /etc/letsencrypt/live/edu.upj53.kr/fullchain.pem --reload
 
 # nohup uvicorn main:app --host 0.0.0.0 --port 80 --reload &
 # ssh upj53@211.222.208.46
-nohup uvicorn main:app --host 0.0.0.0 --port 443 --ssl-keyfile=./key.pem --ssl-certfile=./cert.pem --reload &
+nohup uvicorn main:app --host 0.0.0.0 --port 443 --ssl-keyfile /etc/letsencrypt/live/edu.upj53.kr/privkey.pem  --ssl-certfile /etc/letsencrypt/live/edu.upj53.kr/fullchain.pem --reload &
 
 # 80포트 → 443포트로 redirecting
 sudo iptables -t nat -L
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 443
+
+# 인증서 정보 확인
+certbot certificates
+
+# SSL 자동갱신 cerbot
+crontab -e
+# 매일 새벽 2시에 갱신
+0 2 * * * /usr/bin/certbot renew --quiet
 ```
 
 ## SSH root 허용
