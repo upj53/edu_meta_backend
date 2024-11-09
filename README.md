@@ -228,7 +228,10 @@ nohup uvicorn main:app --host 0.0.0.0 --port 443 --ssl-keyfile /etc/letsencrypt/
 
 # 80포트 → 443포트로 redirecting
 sudo iptables -t nat -L
+# 추가
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 443
+# 삭제
+sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 443
 
 # 인증서 정보 확인
 certbot certificates
